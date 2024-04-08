@@ -23,8 +23,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 @EnableSwagger2WebMvc
 public class Knife4jConfig {
 
-    @Bean("webApi")
-    public Docket createApiDoc() {
+    @Bean("webApi1")
+    public Docket createApiDoc1() {
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInfo())
                 // 分组名称
@@ -37,13 +37,27 @@ public class Knife4jConfig {
         return docket;
     }
 
+    @Bean("webApi2")
+    public Docket createApiDoc2() {
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(buildApiInfo())
+                // 分组名称
+                .groupName("Web 后台接口")
+                .select()
+                // 这里指定 Controller 扫描包路径
+                .apis(RequestHandlerSelectors.basePackage("com.tongjing.weblog.admin.controller"))
+                .paths(PathSelectors.any())
+                .build();
+        return docket;
+    }
+
     /**
      * 构建 API 信息
      * @return
      */
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
-                .title("Weblog 博客前台接口文档") // 标题
+                .title("Weblog 博客接口文档") // 标题
                 .description("Weblog 是一款由 Spring Boot + Vue 3.2 + Vite 4.3 开发的前后端分离博客。") // 描述
                 .termsOfServiceUrl("") // API 服务条款
                 .contact(new Contact("瞳井", "https://github.com/defings", "sleep002@Outlook.com")) // 联系人
