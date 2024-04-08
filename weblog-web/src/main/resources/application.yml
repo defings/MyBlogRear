@@ -4,3 +4,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+jwt:
+  # 签发人
+  issuer: TONGJING
+  # 秘钥
+  secret: fEWqBxW76hmTXniy2tXvzOsTT6V4zc8HqKTyE/1S16HnbMDxFIas70KIJyqhkLR/W/bYERCr9ScBOUXx7w5e1Q==

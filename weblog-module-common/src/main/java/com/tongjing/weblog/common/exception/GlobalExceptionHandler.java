@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 /**
@@ -27,31 +28,29 @@ public class GlobalExceptionHandler {
 
     /**
      * 捕获自定义业务异常
+     *
      * @return
      */
-    @ExceptionHandler({ BizException.class })
+    @ExceptionHandler({BizException.class})
     @ResponseBody
     public Response<Object> handleBizException(HttpServletRequest request, BizException e) {
         log.warn("{} 请求错误, errorCode: {}, errorMessage: {}", request.getRequestURI(), e.getErrorCode(), e.getErrorMessage());
         return Response.fail(e);
     }
-    /**
-     * 其他类型异常
-     * @param request
-     * @param e
-     * @return
-     */
-    @ExceptionHandler({ Exception.class })
-    @ResponseBody
-    public Response<Object> handleOtherException(HttpServletRequest request, Exception e) {
-        log.error("{} request error, ", request.getRequestURI(), e);
-        return Response.fail(ResponseCodeEnum.SYSTEM_ERROR.getErrorCode(), ResponseCodeEnum.SYSTEM_ERROR.getErrorMessage());
+
+    @ExceptionHandler({AccessDeniedException.class})
+    public void throwAccessDeniedException(AccessDeniedException e) throws AccessDeniedException {
+        // 捕获到鉴权失败异常，主动抛出，交给 RestAccessDeniedHandler 去处理
+        log.info("============= 捕获到 AccessDeniedException");
+        throw e;
     }
+
     /**
      * 捕获参数校验异常
+     *
      * @return
      */
-    @ExceptionHandler({ MethodArgumentNotValidException.class })
+    @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseBody
     public Response<Object> handleMethodArgumentNotValidException(HttpServletRequest request, MethodArgumentNotValidException e) {
         // 参数错误异常码
@@ -81,5 +80,19 @@ public class GlobalExceptionHandler {
         log.warn("{} request error, errorCode: {}, errorMessage: {}", request.getRequestURI(), errorCode, errorMessage);
 
         return Response.fail(errorCode, errorMessage);
+    }
+
+    /**
+     * 其他类型异常
+     *
+     * @param request
+     * @param e
+     * @return
+     */
+    @ExceptionHandler({Exception.class})
+    @ResponseBody
+    public Response<Object> handleOtherException(HttpServletRequest request, Exception e) {
+        log.error("{} request error, ", request.getRequestURI(), e);
+        return Response.fail(ResponseCodeEnum.SYSTEM_ERROR.getErrorCode(), ResponseCodeEnum.SYSTEM_ERROR.getErrorMessage());
     }
 }

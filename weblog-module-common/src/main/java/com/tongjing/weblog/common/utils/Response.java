@@ -1,4 +1,5 @@
 package com.tongjing.weblog.common.utils;
+import com.tongjing.weblog.common.enums.ResponseCodeEnum;
 import com.tongjing.weblog.common.exception.BizException;
 import lombok.Data;
 
@@ -55,6 +56,14 @@ public class Response<T> implements Serializable {
         response.setSuccess(false);
         response.setErrorCode(errorCode);
         response.setMessage(errorMessage);
+        return response;
+    }
+
+    public static <T> Response<T> fail(ResponseCodeEnum responseCodeEnum) {
+        Response<T> response = new Response<>();
+        response.setSuccess(false);
+        response.setErrorCode(responseCodeEnum.getErrorCode());
+        response.setMessage(responseCodeEnum.getErrorMessage());
         return response;
     }
 
