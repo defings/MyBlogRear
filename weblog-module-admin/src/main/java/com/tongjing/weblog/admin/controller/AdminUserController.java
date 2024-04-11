@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.RolesAllowed;
+
 /**
  * @author : [TongJing]--------GitHub：<a href="https://github.com/defings">...</a>
  * @version : [v1.0]
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/admin")
-@Api("管理员接口")
+@Api(tags = "管理员接口")
 public class AdminUserController {
     private AdminUserServiceImpl adminUserService;
     @Autowired
@@ -34,12 +36,14 @@ public class AdminUserController {
     @PostMapping("/password/update")
     @ApiOperation(value = "修改用户密码")
     @ApiOperationLog(description = "修改用户密码")
+    @RolesAllowed({"ADMIN", "VISITOR"})
     public Response updatePassword(@RequestBody @Validated UpdateAdminUserPasswordReqVO updateAdminUserPasswordReqVO) {
         return adminUserService.updatePassword(updateAdminUserPasswordReqVO);
     }
     @PostMapping("/user/info")
     @ApiOperation(value = "获取当前用户信息")
     @ApiOperationLog(description = "获取当前用户信息")
+    @RolesAllowed({"ADMIN", "VISITOR"})
     public Response findUserInfo() {
         return adminUserService.findUserInfo();
     }

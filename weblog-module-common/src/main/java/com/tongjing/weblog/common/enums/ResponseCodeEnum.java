@@ -14,9 +14,15 @@ public enum ResponseCodeEnum {
     USERNAME_OR_PWD_ERROR("20001", "用户名或密码错误"),
     FORBIDDEN("20004", "普通编辑账号，无法操作"),
     USERNAME_NOT_FOUND("20003", "该用户不存在"),
+    FILE_UPLOAD_FAILED("20008", "文件上传失败！"),
+    CATEGORY_NOT_EXISTED("20009", "提交的分类不存在！"),
+    ARTICLE_NOT_FOUND("20010", "该文章不存在！"),
 
     // ----------- 业务异常状态码 -----------
     PRODUCT_NOT_FOUND("20000", "该产品不存在（测试使用）"),
+    CATEGORY_NAME_IS_EXISTED("20005", "该分类已存在，请勿重复添加！"),
+    TAG_NAME_IS_EXISTED("20005", "该标签已存在，请勿重复添加！"),
+
     ;
 
     // 异常码

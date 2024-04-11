@@ -34,6 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private RestAccessDeniedHandler deniedHandler;
 
+    private RestAccessDeniedHandler restAccessDeniedHandler;
+
     @Autowired
     public void setJwtAuthenticationSecurityConfig(JwtAuthenticationSecurityConfig jwtAuthenticationSecurityConfig) {
         this.jwtAuthenticationSecurityConfig = jwtAuthenticationSecurityConfig;
@@ -46,6 +48,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void setDeniedHandler(RestAccessDeniedHandler deniedHandler) {
         this.deniedHandler = deniedHandler;
     }
+    @Autowired
+    public void setRestAccessDeniedHandler(RestAccessDeniedHandler restAccessDeniedHandler) {
+        this.restAccessDeniedHandler = restAccessDeniedHandler;
+    }
 
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable(). // 禁用 csrf
@@ -56,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/admin/**").authenticated() // 认证所有以 /admin 为前缀的 URL 资源
                 .anyRequest().permitAll() // 其他都需要放行，无需认证
                 .and()
-                .httpBasic().authenticationEntryPoint(authEntryPoint) // 处理用户未登录访问受保护的资源的情况
+                .httpBasic().authenticationEntryPoint(authEntryPoint)// 处理用户未登录访问受保护的资源的情况
                 .and()
                 .exceptionHandling().accessDeniedHandler(deniedHandler) // 处理登录成功后访问受保护的资源，但是权限不够的情况
                 .and()

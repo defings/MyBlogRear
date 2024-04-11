@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/admin")
-@Api("管理员")
+@Api(tags = "管理员")
 public class TestAdminController {
     @ApiOperation("管理员测试接口")
     @RequestMapping("/test")

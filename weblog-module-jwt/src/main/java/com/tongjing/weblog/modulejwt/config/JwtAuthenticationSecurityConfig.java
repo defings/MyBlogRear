@@ -52,6 +52,7 @@ public class JwtAuthenticationSecurityConfig extends SecurityConfigurerAdapter<D
         filter.setAuthenticationSuccessHandler(restAuthenticationSuccessHandler);
         filter.setAuthenticationFailureHandler(restAuthenticationFailureHandler);
 
+
         // 直接使用 DaoAuthenticationProvider, 它是 Spring Security 提供的默认的身份验证提供者之一
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         // 设置 userDetailService，用于获取用户的详细信息
