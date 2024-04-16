@@ -3,6 +3,9 @@ package com.tongjing.weblog.admin.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
+import com.tongjing.weblog.admin.event.DeleteArticleEvent;
+import com.tongjing.weblog.admin.event.PublishArticleEvent;
+import com.tongjing.weblog.admin.event.UpdateArticleEvent;
 import com.tongjing.weblog.admin.model.vo.*;
 import com.tongjing.weblog.admin.service.AdminArticleService;
 import com.tongjing.weblog.common.domain.dos.*;
@@ -12,6 +15,7 @@ import com.tongjing.weblog.common.utils.PageResponse;
 import com.tongjing.weblog.common.utils.Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +46,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
     private CategoryMapper categoryMapper;
     private TagMapper tagMapper;
     private ArticleTagRelMapper articleTagRelMapper;
+    private ApplicationEventPublisher eventPublisher;
 
     @Autowired
     public void setArticleMapper(ArticleMapper articleMapper) {
@@ -73,6 +78,11 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         this.articleTagRelMapper = articleTagRelMapper;
     }
 
+    @Autowired
+    public void setEventPublisher(ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
+    }
+
     /**
      * 发布文章
      *
@@ -87,8 +97,8 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                 .title(publishArticleReqVO.getTitle())
                 .cover(publishArticleReqVO.getCover())
                 .summary(publishArticleReqVO.getSummary())
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
+                .createTime(LocalDate.now())
+                .updateTime(LocalDate.now())
                 .build();
         articleMapper.insert(articleDO);
 
@@ -121,9 +131,11 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         // 4. 保存文章关联的标签集合
         List<String> publishTags = publishArticleReqVO.getTags();
         insertTags(articleId, publishTags);
-
+        // 发送文章发布事件
+        eventPublisher.publishEvent(new PublishArticleEvent(this, articleId));
         return Response.success();
     }
+
     /**
      * 删除文章
      *
@@ -146,7 +158,8 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
         // 4. 删除文章-标签关联记录
         articleTagRelMapper.deleteByArticleId(articleId);
-
+        // 发布文章删除事件
+        eventPublisher.publishEvent(new DeleteArticleEvent(this, articleId));
         return Response.success();
     }
 
@@ -178,6 +191,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                             .id(articleDO.getId())
                             .title(articleDO.getTitle())
                             .cover(articleDO.getCover())
+                            .readNum(articleDO.getReadNum())
                             .createTime(articleDO.getCreateTime())
                             .build())
                     .collect(Collectors.toList());
@@ -188,6 +202,7 @@ public class AdminArticleServiceImpl implements AdminArticleService {
 
     /**
      * 查询文章详情
+     *
      * @return
      */
     @Override
@@ -236,14 +251,14 @@ public class AdminArticleServiceImpl implements AdminArticleService {
                 .title(updateArticleReqVO.getTitle())
                 .cover(updateArticleReqVO.getCover())
                 .summary(updateArticleReqVO.getSummary())
-                .updateTime(LocalDateTime.now())
+                .updateTime(LocalDate.now())
                 .build();
         int count = articleMapper.updateById(articleDO);
 
         // 根据更新是否成功，来判断该文章是否存在
         if (count == 0) {
             log.warn("==> 该文章不存在, articleId: {}", articleId);
-           return Response.fail(ResponseCodeEnum.ARTICLE_NOT_FOUND);
+            return Response.fail(ResponseCodeEnum.ARTICLE_NOT_FOUND);
         }
 
         // 2. VO 转 ArticleContentDO，并更新
@@ -277,7 +292,8 @@ public class AdminArticleServiceImpl implements AdminArticleService {
         articleTagRelMapper.deleteByArticleId(articleId);
         List<String> publishTags = updateArticleReqVO.getTags();
         insertTags(articleId, publishTags);
-
+        // 发布文章修改事件
+        eventPublisher.publishEvent(new UpdateArticleEvent(this, articleId));
         return Response.success();
     }
 

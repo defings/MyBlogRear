@@ -1,5 +1,12 @@
 package com.tongjing.weblog.admin.service.impl;
 
+import com.mysql.cj.util.StringUtils;
+import com.tongjing.weblog.admin.model.vo.InsertUserRsp;
+import com.tongjing.weblog.admin.model.vo.UpDataUserInfo;
+import com.tongjing.weblog.common.domain.dos.UserDO;
+import com.tongjing.weblog.common.domain.dos.UserRoleDO;
+import com.tongjing.weblog.common.domain.mapper.UserRoleMapper;
+import com.tongjing.weblog.common.domain.vo.FindUserAllResp;
 import com.tongjing.weblog.admin.model.vo.UpdateAdminUserPasswordReqVO;
 import com.tongjing.weblog.admin.service.AdminUserService;
 import com.tongjing.weblog.common.domain.mapper.UserMapper;
@@ -11,7 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,6 +35,7 @@ import java.util.Objects;
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
     private UserMapper userMapper;
+    private UserRoleMapper userRoleMapper;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -36,6 +46,11 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Autowired
     public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setUserRoleMapper(UserRoleMapper userRoleMapper) {
+        this.userRoleMapper = userRoleMapper;
     }
 
     /**
@@ -67,5 +82,29 @@ public class AdminUserServiceImpl implements AdminUserService {
         String username = authentication.getName();
         FindUserInfoRspVO findUserInfoRspVO = userMapper.findUserInfoByUserName(username);
         return Objects.isNull(findUserInfoRspVO) ? Response.fail("没有该用户") : Response.success(findUserInfoRspVO);
+    }
+
+    @Override
+    public Response findAllUser() {
+        return Response.success(userMapper.findUserAll());
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Response UpdateUserInfo(UpDataUserInfo upDataUserInfo) {
+        userRoleMapper.upDataUserRole(upDataUserInfo.getName(), upDataUserInfo.getUsername(), upDataUserInfo.getRole());
+        userMapper.updateUserInfoById(upDataUserInfo.getId(), upDataUserInfo.getUsername(), upDataUserInfo.getAvatarPath());
+        return Response.success();
+    }
+
+    @Override
+    public Response upDataUserSate(Long id, int state) {
+        return userMapper.upDataUserState(id, state) == 1 ? Response.success() : Response.fail("修改失败");
+    }
+
+    public Response insertUser(InsertUserRsp insertUserRsp){
+        userMapper.insert(UserDO.builder().username(insertUserRsp.getUsername()).avatarPath("").password(passwordEncoder.encode("tongjing")).build());
+        userRoleMapper.insert(UserRoleDO.builder().username(insertUserRsp.getUsername()).role(insertUserRsp.getRole()).build());
+        return Response.success();
     }
 }

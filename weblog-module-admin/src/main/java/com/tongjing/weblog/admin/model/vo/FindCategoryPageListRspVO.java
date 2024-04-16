@@ -30,6 +30,7 @@ public class FindCategoryPageListRspVO {
      * 分类名称
      */
     private String name;
+    private Integer articlesTotal;
 
     /**
      * 创建时间

@@ -34,7 +34,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private RestAccessDeniedHandler deniedHandler;
 
-    private RestAccessDeniedHandler restAccessDeniedHandler;
 
     @Autowired
     public void setJwtAuthenticationSecurityConfig(JwtAuthenticationSecurityConfig jwtAuthenticationSecurityConfig) {
@@ -48,11 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void setDeniedHandler(RestAccessDeniedHandler deniedHandler) {
         this.deniedHandler = deniedHandler;
     }
-    @Autowired
-    public void setRestAccessDeniedHandler(RestAccessDeniedHandler restAccessDeniedHandler) {
-        this.restAccessDeniedHandler = restAccessDeniedHandler;
-    }
-
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable(). // 禁用 csrf
                 formLogin().disable() // 禁用表单登录

@@ -92,7 +92,6 @@ public class TokenAuthenticationFilter  extends OncePerRequestFilter {
                 }
             }
         }
-
         // 继续执行写一个过滤器
         filterChain.doFilter(request, response);
     }

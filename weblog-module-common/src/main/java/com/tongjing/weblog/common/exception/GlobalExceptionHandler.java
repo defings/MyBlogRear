@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -38,12 +40,12 @@ public class GlobalExceptionHandler {
         return Response.fail(e);
     }
 
-    @ExceptionHandler({AccessDeniedException.class})
-    public void throwAccessDeniedException(AccessDeniedException e) throws AccessDeniedException {
-        // 捕获到鉴权失败异常，主动抛出，交给 RestAccessDeniedHandler 去处理
-        log.info("============= 捕获到 AccessDeniedException");
-        throw e;
-    }
+//    @ExceptionHandler({AccessDeniedException.class})
+//    public void throwAccessDeniedException(AccessDeniedException e) throws AccessDeniedException {
+//        // 捕获到鉴权失败异常，主动抛出，交给 RestAccessDeniedHandler 去处理
+//        log.info("============= 捕获到 AccessDeniedException");
+//        throw e;
+//    }
 
     /**
      * 捕获参数校验异常
@@ -91,8 +93,12 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler({Exception.class})
     @ResponseBody
-    public Response<Object> handleOtherException(HttpServletRequest request, Exception e) {
-        log.error("{} request error, ", request.getRequestURI(), e);
+    public Response<Object> handleOtherException(HttpServletRequest request, Exception e) throws AccessDeniedException {
+        if (Objects.equals(e.getMessage(), "不允许访问")) {
+            throw new AccessDeniedException("权限不够");
+        }
+        log.error("{}-{}===== request error, ", request.getRequestURI(), e.getMessage());
+        e.printStackTrace();
         return Response.fail(ResponseCodeEnum.SYSTEM_ERROR.getErrorCode(), ResponseCodeEnum.SYSTEM_ERROR.getErrorMessage());
     }
 }

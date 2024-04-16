@@ -1,5 +1,6 @@
 package com.tongjing.weblog.admin.service;
 
+import com.tongjing.weblog.admin.model.vo.UpDataUserInfo;
 import com.tongjing.weblog.admin.model.vo.UpdateAdminUserPasswordReqVO;
 import com.tongjing.weblog.common.utils.Response;
 
@@ -25,4 +26,9 @@ public interface AdminUserService {
      * @return
      */
     Response findUserInfo();
+
+    Response findAllUser();
+
+    Response UpdateUserInfo(UpDataUserInfo upDataUserInfo);
+    Response upDataUserSate(Long id, int state);
 }

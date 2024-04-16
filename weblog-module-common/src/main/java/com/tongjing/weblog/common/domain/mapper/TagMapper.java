@@ -2,6 +2,8 @@ package com.tongjing.weblog.common.domain.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.tongjing.weblog.common.domain.dos.CategoryDO;
 import com.tongjing.weblog.common.domain.dos.TagDo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -36,5 +38,21 @@ public interface TagMapper extends BaseMapper<TagDo> {
         wrapper.like(TagDo::getName, key).orderByDesc(TagDo::getCreateTime);
 
         return selectList(wrapper);
+    }
+
+    /**
+     * 根据标签 ID 批量查询
+     * @param tagIds
+     * @return
+     */
+    default List<TagDo> selectByIds(List<Long> tagIds) {
+        return selectList(Wrappers.<TagDo>lambdaQuery()
+                .in(TagDo::getId, tagIds));
+    }
+
+    default List<TagDo> selectByLimit(Long limit){
+        return selectList(Wrappers.<TagDo>lambdaQuery()
+                .orderByDesc(TagDo::getArticlesTotal)
+                .last(String.format("LIMIT %d", limit)));
     }
 }

@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tongjing.weblog.admin.model.vo.*;
 import com.tongjing.weblog.admin.service.AdminCategoryService;
+import com.tongjing.weblog.common.domain.dos.ArticleCategoryRelDO;
 import com.tongjing.weblog.common.domain.dos.CategoryDO;
+import com.tongjing.weblog.common.domain.mapper.ArticleCategoryRelMapper;
 import com.tongjing.weblog.common.domain.mapper.CategoryMapper;
 import com.tongjing.weblog.common.enums.ResponseCodeEnum;
 import com.tongjing.weblog.common.utils.PageResponse;
@@ -33,6 +35,12 @@ import java.util.stream.Collectors;
 @Slf4j
 public class AdminCategoryServiceImpl implements AdminCategoryService {
     private CategoryMapper categoryMapper;
+    private ArticleCategoryRelMapper articleCategoryRelMapper;
+
+    @Autowired
+    public void setArticleCategoryRelMapper(ArticleCategoryRelMapper articleCategoryRelMapper) {
+        this.articleCategoryRelMapper = articleCategoryRelMapper;
+    }
 
     @Autowired
     public void setCategoryMapper(CategoryMapper categoryMapper) {
@@ -79,20 +87,30 @@ public class AdminCategoryServiceImpl implements AdminCategoryService {
         Page<CategoryDO> categoryDOPage = categoryMapper.selectPage(page, wrapper);
         List<CategoryDO> categoryDOS = categoryDOPage.getRecords();
         List<FindCategoryPageListRspVO> vos = null;
-        if (!CollectionUtils.isEmpty(categoryDOS)){
+        if (!CollectionUtils.isEmpty(categoryDOS)) {
             vos = categoryDOS.stream()
                     .map(categoryDO -> FindCategoryPageListRspVO.builder()
-                                .id(categoryDO.getId())
-                                .name(categoryDO.getName())
-                                .createTime(categoryDO.getCreateTime())
+                            .id(categoryDO.getId())
+                            .name(categoryDO.getName())
+                            .articlesTotal(categoryDO.getArticlesTotal())
+                            .createTime(categoryDO.getCreateTime())
                             .build()).collect(Collectors.toList());
         }
         return PageResponse.success(categoryDOPage, vos);
     }
+
     @Override
     public Response deleteCategory(DeleteCategoryReqVO deleteCategoryReqVO) {
         // 分类 ID
         Long categoryId = deleteCategoryReqVO.getId();
+
+        // 校验该分类下是否已经有文章，若有，则提示需要先删除分类下所有文章，才能删除
+        ArticleCategoryRelDO articleCategoryRelDO = articleCategoryRelMapper.selectOneByCategoryId(categoryId);
+
+        if (Objects.nonNull(articleCategoryRelDO)) {
+            log.warn("==> 此分类下包含文章，无法删除，categoryId: {}", categoryId);
+            return Response.fail(ResponseCodeEnum.CATEGORY_CAN_NOT_DELETE);
+        }
 
         // 删除分类
         categoryMapper.deleteById(categoryId);

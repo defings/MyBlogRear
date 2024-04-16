@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -35,9 +36,9 @@ public class ArticleDO {
 
     private String summary;
 
-    private LocalDateTime createTime;
+    private LocalDate createTime;
 
-    private LocalDateTime updateTime;
+    private LocalDate updateTime;
 
     private Boolean isDeleted;
 

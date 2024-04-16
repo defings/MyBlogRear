@@ -31,4 +31,6 @@ public class TagDo {
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private int isDeleted;
+
+    private Integer articlesTotal;
 }

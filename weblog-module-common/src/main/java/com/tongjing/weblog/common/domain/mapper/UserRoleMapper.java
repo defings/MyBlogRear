@@ -1,6 +1,7 @@
 package com.tongjing.weblog.common.domain.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.tongjing.weblog.common.domain.dos.UserRoleDO;
 import org.apache.ibatis.annotations.Mapper;
@@ -27,5 +28,12 @@ public interface UserRoleMapper extends BaseMapper<UserRoleDO> {
         LambdaQueryWrapper<UserRoleDO> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(UserRoleDO::getUsername, username);
         return selectList(wrapper);
+    }
+    default int upDataUserRole(String name, String username, String role){
+        LambdaUpdateWrapper<UserRoleDO> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.set(UserRoleDO::getUsername, username)
+                .set(UserRoleDO::getRole, role);
+        wrapper.eq(UserRoleDO::getUsername, name);
+        return update(null, wrapper);
     }
 }

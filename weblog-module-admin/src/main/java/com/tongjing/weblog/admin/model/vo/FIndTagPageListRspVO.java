@@ -26,4 +26,8 @@ public class FIndTagPageListRspVO {
     private long id;
     private String name;
     private LocalDateTime createTime;
+    /**
+     * 文章总数
+     */
+    private Integer articlesTotal;
 }

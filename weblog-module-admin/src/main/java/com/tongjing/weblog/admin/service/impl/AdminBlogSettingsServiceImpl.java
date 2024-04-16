@@ -40,9 +40,10 @@ public class AdminBlogSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper
                 .backgroundImage(updateBlogSettingsReqVO.getBackgroundImage())
                 .menuColor(updateBlogSettingsReqVO.getMenuColor())
                 .githubHomepage(updateBlogSettingsReqVO.getGithubHomepage())
-                .giteeHomepage(updateBlogSettingsReqVO.getGiteeHomepage())
-                .csdnHomepage(updateBlogSettingsReqVO.getCsdnHomepage())
-                .zhihuHomepage(updateBlogSettingsReqVO.getZhihuHomepage())
+                .qq(updateBlogSettingsReqVO.getQq())
+                .weixing(updateBlogSettingsReqVO.getWeixing())
+                .email(updateBlogSettingsReqVO.getEmail())
+                .caseNumber(updateBlogSettingsReqVO.getCaseNumber())
                 .build();
 
         // 保存或更新（当数据库中存在 ID 为 1 的记录时，则执行更新操作，否则执行插入操作）
@@ -69,9 +70,10 @@ public class AdminBlogSettingsServiceImpl extends ServiceImpl<BlogSettingsMapper
                 .introduction(blogSettingsDO.getIntroduction())
                 .avatar(blogSettingsDO.getAvatar())
                 .githubHomepage(blogSettingsDO.getGithubHomepage())
-                .csdnHomepage(blogSettingsDO.getCsdnHomepage())
-                .giteeHomepage(blogSettingsDO.getGiteeHomepage())
-                .zhihuHomepage(blogSettingsDO.getZhihuHomepage())
+                .qq(blogSettingsDO.getQq())
+                .weixing(blogSettingsDO.getWeixing())
+                .email(blogSettingsDO.getEmail())
+                .caseNumber(blogSettingsDO.getCaseNumber())
                 .build();
 
         return Response.success(vo);

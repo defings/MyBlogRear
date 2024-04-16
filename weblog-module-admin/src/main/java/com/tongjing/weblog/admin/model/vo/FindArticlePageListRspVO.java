@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 /**
  * @author : [TongJing]--------GitHub：<a href="https://github.com/defings">...</a>
@@ -38,10 +38,11 @@ public class FindArticlePageListRspVO  {
      * 文章封面
      */
     private String cover;
+    private Long readNum;
 
     /**
      * 发布时间
      */
-    private LocalDateTime createTime;
+    private LocalDate createTime;
 
 }

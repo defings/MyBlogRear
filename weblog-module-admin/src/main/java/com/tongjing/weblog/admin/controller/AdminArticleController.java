@@ -1,9 +1,6 @@
 package com.tongjing.weblog.admin.controller;
 
-import com.tongjing.weblog.admin.model.vo.DeleteArticleReqVO;
-import com.tongjing.weblog.admin.model.vo.FindArticlePageListReqVO;
-import com.tongjing.weblog.admin.model.vo.PublishArticleReqVO;
-import com.tongjing.weblog.admin.model.vo.UpdateArticleReqVO;
+import com.tongjing.weblog.admin.model.vo.*;
 import com.tongjing.weblog.admin.service.impl.AdminArticleServiceImpl;
 import com.tongjing.weblog.common.aspect.ApiOperationLog;
 import com.tongjing.weblog.common.utils.Response;
@@ -59,6 +56,7 @@ public class AdminArticleController {
     @PostMapping("/list")
     @ApiOperation(value = "查询文章分页数据")
     @ApiOperationLog(description = "查询文章分页数据")
+    @RolesAllowed({"ADMIN", "VISITOR"})
     public Response findArticlePageList(@RequestBody @Validated FindArticlePageListReqVO findArticlePageListReqVO) {
         return articleService.findArticlePageList(findArticlePageListReqVO);
     }
@@ -66,9 +64,17 @@ public class AdminArticleController {
     @PostMapping("/update")
     @ApiOperation(value = "更新文章")
     @ApiOperationLog(description = "更新文章")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @RolesAllowed({"ADMIN", "VISITOR"})
     public Response updateArticle(@RequestBody @Validated UpdateArticleReqVO updateArticleReqVO) {
         return articleService.updateArticle(updateArticleReqVO);
+    }
+
+    @PostMapping("/detail")
+    @ApiOperation(value = "查询文章详情")
+    @ApiOperationLog(description = "查询文章详情")
+    @RolesAllowed({"ADMIN", "VISITOR"})
+    public Response findArticleDetail(@RequestBody @Validated FindArticleDetailReqVO findArticlePageListReqVO) {
+        return articleService.findArticleDetail(findArticlePageListReqVO);
     }
 
 }

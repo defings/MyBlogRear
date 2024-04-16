@@ -18,3 +18,9 @@ spring:
       connection-test-query: SELECT 1
 logging:
   config: classpath:logback-weblog.xml
+
+#=================================================================
+# Lucene 全文检索
+#=================================================================
+lucene:
+  indexDir: /app/weblog/lucene-index # lucene 索引存放的位置

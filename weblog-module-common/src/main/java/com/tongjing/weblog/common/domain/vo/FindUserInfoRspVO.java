@@ -27,5 +27,4 @@ public class FindUserInfoRspVO {
      * 用头像
      * */
     private String avatarPath;
-
 }

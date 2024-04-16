@@ -41,9 +41,10 @@ public class BlogSettingsDO {
 
     private String githubHomepage;
 
-    private String csdnHomepage;
+    private String qq;
 
-    private String giteeHomepage;
+    private String weixing;
 
-    private String zhihuHomepage;
+    private String email;
+    private String caseNumber;
 }

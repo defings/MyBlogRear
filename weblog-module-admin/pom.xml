@@ -24,6 +24,10 @@
 			<artifactId>weblog-module-jwt</artifactId>
 			<version>${revision}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.tongjing</groupId>
+			<artifactId>weblog-module-search</artifactId>
+		</dependency>
 		<!-- Spring Security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
