@@ -1,12 +1,14 @@
+server:
+  port: 8080
 spring:
   banner:
     charset: UTF-8
     location: banner.text
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/myblog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    url: jdbc:mysql://xxxxx:3306/blog?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
     username: root
-    password: 2582687397*mysql
+    password: xxxxxx
     hikari:
       minimum-idle: 5
       maximum-pool-size: 20
@@ -24,3 +26,13 @@ logging:
 #=================================================================
 lucene:
   indexDir: /app/weblog/lucene-index # lucene 索引存放的位置
+
+
+  #=================================================================
+  # minio
+  #=================================================================
+minio:
+  endpoint: http://xxxx:9000
+  accessKey: #用户名
+  secretKey: #密码
+  bucketName: #桶的名字

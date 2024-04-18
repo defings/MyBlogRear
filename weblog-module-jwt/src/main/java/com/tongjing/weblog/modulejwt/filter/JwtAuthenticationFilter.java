@@ -35,12 +35,15 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         JsonNode jsonNode = mapper.readTree(request.getInputStream());
         JsonNode usernameNode = jsonNode.get("username");
         JsonNode passwordNode =  jsonNode.get("password");
+
         // 判断用户名、密码是否为空
         if (Objects.isNull(usernameNode) || Objects.isNull(passwordNode)
             || StringUtils.isBlank(usernameNode.textValue()) || StringUtils.isBlank(passwordNode.textValue())) {
             throw new UsernameOrPasswordNullException("用户名或密码不能为空");
         }
 
+        log.info(request.getParameter("username"));
+        log.info(request.getParameter("password"));
         String username = usernameNode.textValue();
         String password = passwordNode.textValue();
 
