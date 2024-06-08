@@ -37,7 +37,7 @@ public class RestAuthenticationSuccessHandler implements AuthenticationSuccessHa
         // 通过用户名生成 Token
         String username = userDetails.getUsername();
         String token = jwtTokenHelper.generateToken(username);
-
+//        log.info(token);
         // 返回 Token
         LoginRspVO loginRspVO = LoginRspVO.builder().token(token).build();
 

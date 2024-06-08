@@ -11,6 +11,6 @@ spring:
 
 jwt:
   # 签发人
-  issuer: xxxxx
+  issuer: tongjing
   # 秘钥
-  secret: xxxx
+  secret: cLyiBXkXrT/K9LJGiC6n+r3Nv52w2i5UpD10UyJQ5iBFvtAaZ9MGM9zgYYzT8T363pnNd1DHLhwfK4N/aMyZiQ==

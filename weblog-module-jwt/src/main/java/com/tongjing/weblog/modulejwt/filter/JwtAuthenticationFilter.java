@@ -42,11 +42,10 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
             throw new UsernameOrPasswordNullException("用户名或密码不能为空");
         }
 
-        log.info(request.getParameter("username"));
-        log.info(request.getParameter("password"));
         String username = usernameNode.textValue();
         String password = passwordNode.textValue();
-
+        log.info(username);
+        log.info(password);
         // 将用户名、密码封装到 Token 中
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                 = new UsernamePasswordAuthenticationToken(username, password);
