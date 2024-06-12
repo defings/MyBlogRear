@@ -128,7 +128,7 @@ public class TagServiceImpl implements TagService {
                             .id(articleDO.getId())
                             .cover(articleDO.getCover())
                             .title(articleDO.getTitle())
-                            .createDate(articleDO.getCreateTime())
+                            .createTime(articleDO.getCreateTime())
                             .build())
                     .collect(Collectors.toList());
         }

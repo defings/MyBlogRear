@@ -24,9 +24,10 @@ public class FindCategoryArticlePageListRspVO {
     private Long id;
     private String cover;
     private String title;
+    private String summary;
     /**
      * 发布日期
      */
-    private LocalDate createDate;
+    private LocalDate createTime;
 
 }

@@ -26,6 +26,6 @@ public class FindTagArticlePageListRspVO {
     /**
      * 发布日期
      */
-    private LocalDate createDate;
+    private LocalDate createTime;
 
 }

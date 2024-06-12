@@ -138,7 +138,8 @@ public class CategoryServiceImpl implements CategoryService {
                             .id(articleDO.getId())
                             .cover(articleDO.getCover())
                             .title(articleDO.getTitle())
-                            .createDate(articleDO.getCreateTime())
+                            .summary(articleDO.getSummary())
+                            .createTime(articleDO.getCreateTime())
                             .build())
                     .collect(Collectors.toList());
         }
