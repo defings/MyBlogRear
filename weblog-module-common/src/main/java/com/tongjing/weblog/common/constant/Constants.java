@@ -10,7 +10,6 @@ package com.tongjing.weblog.common.constant;
  * @updateRemark : [说明本次修改内容]
  */
 import java.time.format.DateTimeFormatter;
-
 public interface Constants {
     /**
      * 月-日 格式

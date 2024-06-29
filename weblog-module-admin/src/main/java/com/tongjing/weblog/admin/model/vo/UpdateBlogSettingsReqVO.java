@@ -35,6 +35,8 @@ public class UpdateBlogSettingsReqVO {
 
     @NotBlank(message = "博客介绍语不能为空")
     private String introduction;
+    @NotBlank(message = "随记介绍语不能为空")
+    private String notesDescription;
 
     @NotBlank(message = "博客头像不能为空")
     private String avatar;

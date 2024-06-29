@@ -43,6 +43,7 @@ public class BlogSettingsServiceImpl implements BlogSettingsService {
                 .name(blogSettingsDO.getName())
                 .author(blogSettingsDO.getAuthor())
                 .introduction(blogSettingsDO.getIntroduction())
+                .notesDescription(blogSettingsDO.getNotesDescription())
                 .avatar(blogSettingsDO.getAvatar())
                 .menuColor(blogSettingsDO.getMenuColor())
                 .backgroundImage(blogSettingsDO.getBackgroundImage())

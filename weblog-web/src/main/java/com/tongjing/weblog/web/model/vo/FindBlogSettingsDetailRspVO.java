@@ -23,6 +23,7 @@ public class FindBlogSettingsDetailRspVO {
     private String name;
     private String author;
     private String introduction;
+    private String notesDescription;
     private String avatar;
     private String menuColor;
     private String backgroundImage;

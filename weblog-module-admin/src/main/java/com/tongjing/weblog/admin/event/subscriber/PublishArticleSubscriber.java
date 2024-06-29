@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.scheduling.annotation.Async;
@@ -43,7 +44,7 @@ public class PublishArticleSubscriber implements ApplicationListener<PublishArti
     private AdminStatisticsService statisticsService;
 
     @Override
-    @Async("threadPoolTaskExecutor")
+//    @Async("threadPoolTaskExecutor")
     public void onApplicationEvent(PublishArticleEvent event) {
         // 在这里处理收到的事件，可以是任何逻辑操作
         Long articleId = event.getArticleId();

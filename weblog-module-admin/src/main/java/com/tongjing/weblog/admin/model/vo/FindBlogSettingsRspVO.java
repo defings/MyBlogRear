@@ -29,6 +29,7 @@ public class FindBlogSettingsRspVO {
     private String backgroundImage;
 
     private String introduction;
+    private String notesDescription;
 
     private String avatar;
 
